@@ -6,7 +6,7 @@ Generated from https://longthanh-imbiss.com/openapi.json. This SDK is read-only;
 
 Copyright (c) 2026 SWL Services. All rights reserved. See LICENSE.txt.
 
-# @swl-services/long-thanh-sdk@0.1.0
+# @moinsachsen1234/long-thanh-sdk@0.1.0
 
 A TypeScript SDK client for the longthanh-imbiss.com API.
 
@@ -15,7 +15,7 @@ A TypeScript SDK client for the longthanh-imbiss.com API.
 First, install the SDK from npm.
 
 ```bash
-npm install @swl-services/long-thanh-sdk --save
+npm install @moinsachsen1234/long-thanh-sdk --save
 ```
 
 Next, try it out.
@@ -25,11 +25,11 @@ Next, try it out.
 import {
   Configuration,
   DefaultApi,
-} from '@swl-services/long-thanh-sdk';
-import type { GetMenuRequest } from '@swl-services/long-thanh-sdk';
+} from '@moinsachsen1234/long-thanh-sdk';
+import type { GetMenuRequest } from '@moinsachsen1234/long-thanh-sdk';
 
 async function example() {
-  console.log("🚀 Testing @swl-services/long-thanh-sdk SDK...");
+  console.log("🚀 Testing @moinsachsen1234/long-thanh-sdk SDK...");
   const api = new DefaultApi();
 
   try {
