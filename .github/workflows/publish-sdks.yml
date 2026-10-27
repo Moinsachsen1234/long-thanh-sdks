@@ -1,0 +1,54 @@
+name: Publish SDK packages
+on:
+  workflow_dispatch:
+    inputs:
+      pypi:
+        description: Publish Python package after its trusted publisher is configured
+        type: boolean
+        default: false
+      rubygems:
+        description: Publish Ruby gem after its trusted publisher is configured
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  pypi:
+    if: inputs.pypi
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.13'
+      - run: python -m pip install build twine
+      - run: python -m build python --outdir dist
+      - run: python -m twine check dist/*
+      - uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086
+        with:
+          packages-dir: dist/
+  rubygems:
+    if: inputs.rubygems
+    runs-on: ubuntu-latest
+    environment: rubygems
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: ruby/setup-ruby@7f797815d8adceb1c412e7abefdd1ab4abc47a5f
+        with:
+          ruby-version: '3.4'
+      - run: gem build long_thanh_sdk.gemspec --output long_thanh_sdk-0.1.0.gem
+        working-directory: ruby
+      - uses: rubygems/configure-rubygems-credentials@dc5a8d8553e6ee01fc26761a49e99e733d17954a
+      - run: gem push long_thanh_sdk-0.1.0.gem
+        working-directory: ruby
