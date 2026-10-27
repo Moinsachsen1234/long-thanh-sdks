@@ -9,14 +9,14 @@ https://longthanh-imbiss.com/openapi.json. SDK release version: 0.1.0.
 
 | Ecosystem | Package/module | Homepage metadata |
 | --- | --- | --- |
-| npm | `@moinsachsen1234/long-thanh-sdk` | package.json homepage |
+| npm | `@swlservices/long-thanh-sdk` | package.json homepage |
 | Python | `long-thanh-sdk` | project.urls.Homepage and setup.py URL |
 | Go | `github.com/Moinsachsen1234/long-thanh-sdks/go` | Repository homepage and package README |
 | RubyGems | `long_thanh_sdk` | gem homepage and metadata.homepage_uri |
 
 Package-registry publication requires authenticated publisher accounts. A
 generated archive is not proof that a package has been published to a registry.
-The npm scope belongs to the authenticated publisher account moinsachsen1234; SWL Services is the author/publisher branding.
+The npm scope belongs to the SWL Services organization swlservices. The authenticated publisher account moinsachsen1234 is its owner.
 
 ## API scope
 
