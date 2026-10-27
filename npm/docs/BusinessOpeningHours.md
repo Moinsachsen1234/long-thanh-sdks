@@ -16,7 +16,7 @@ Name | Type
 ## Example
 
 ```typescript
-import type { BusinessOpeningHours } from '@swl-services/long-thanh-sdk'
+import type { BusinessOpeningHours } from '@swlservices/long-thanh-sdk'
 
 // TODO: Update the object below with actual values
 const example = {

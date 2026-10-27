@@ -1,6 +1,6 @@
 {
   "npmName": "@swlservices/long-thanh-sdk",
-  "npmVersion": "0.1.0",
+  "npmVersion": "0.1.1",
   "npmRepository": "https://github.com/Moinsachsen1234/long-thanh-sdks.git",
   "supportsES6": true,
   "hideGenerationTimestamp": true,

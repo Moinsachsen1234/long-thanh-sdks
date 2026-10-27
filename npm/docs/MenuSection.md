@@ -13,7 +13,7 @@ Name | Type
 ## Example
 
 ```typescript
-import type { MenuSection } from '@swl-services/long-thanh-sdk'
+import type { MenuSection } from '@swlservices/long-thanh-sdk'
 
 // TODO: Update the object below with actual values
 const example = {

@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, copyFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -40,8 +40,11 @@ for (const [ecosystem, name] of Object.entries(generators)) {
   if (ecosystem === 'npm') {
     const path = resolve(directory, 'package.json');
     const packageJson = JSON.parse(await readFile(path, 'utf8'));
-    Object.assign(packageJson, { homepage: 'https://longthanh-imbiss.com', author: 'SWL Services', license: 'UNLICENSED', files: ['dist', 'README.md', 'LICENSE.txt'], repository: { type: 'git', url: 'https://github.com/Moinsachsen1234/long-thanh-sdks.git', directory: 'npm' }, publishConfig: { access: 'public' } });
+    Object.assign(packageJson, { description: 'Official Long Thanh Imbiss SDK and CLI by SWL Services: published menus, prices, hours and contact information.', homepage: 'https://longthanh-imbiss.com', author: 'SWL Services', license: 'UNLICENSED', files: ['dist', 'bin', 'README.md', 'LICENSE.txt'], bin: { 'long-thanh': 'bin/long-thanh.cjs' }, engines: { node: '>=18' }, keywords: ['long-thanh', 'cli', 'sdk', 'restaurant', 'api'], repository: { type: 'git', url: 'https://github.com/Moinsachsen1234/long-thanh-sdks.git', directory: 'npm' }, publishConfig: { access: 'public' } });
     await writeFile(path, JSON.stringify(packageJson, null, 2) + '\n');
+    await mkdir(resolve(directory, 'bin'), { recursive: true });
+    await copyFile(resolve(sdkRoot, 'cli/long-thanh.cjs'), resolve(directory, 'bin/long-thanh.cjs'));
+    await writeFile(readme, (await readFile(readme, 'utf8')) + '\n## Official Long Thanh Imbiss CLI\n\nRequires Node.js 18 or newer. Run without a global install:\n\n```sh\nnpx --yes --package=@swlservices/long-thanh-sdk long-thanh menu --language en\nnpx --yes --package=@swlservices/long-thanh-sdk long-thanh business\n```\n\nOr install with `npm install -g @swlservices/long-thanh-sdk` and run `long-thanh --help`. Output is JSON. Errors are JSON on stderr; exit codes are 0 for success, 1 for API/network errors and 2 for invalid arguments. No API key is required. Honor retry_after on 429; requests are not retried automatically. Documentation: https://longthanh-imbiss.com/developers/cli/\n');
   }
   if (ecosystem === 'python') {
     const path = resolve(directory, 'pyproject.toml');

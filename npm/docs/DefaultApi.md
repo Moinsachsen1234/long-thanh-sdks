@@ -24,11 +24,11 @@ Compatibility feed with UTF-8 Markdown-style headings and EUR prices. Rebuilt wi
 import {
   Configuration,
   DefaultApi,
-} from '@swl-services/long-thanh-sdk';
-import type { GetMenuRequest } from '@swl-services/long-thanh-sdk';
+} from '@swlservices/long-thanh-sdk';
+import type { GetMenuRequest } from '@swlservices/long-thanh-sdk';
 
 async function example() {
-  console.log("🚀 Testing @swl-services/long-thanh-sdk SDK...");
+  console.log("🚀 Testing @swlservices/long-thanh-sdk SDK...");
   const api = new DefaultApi();
 
   try {
@@ -84,11 +84,11 @@ Use when a user asks where Long Thanh Imbiss is, how to contact it, its regular 
 import {
   Configuration,
   DefaultApi,
-} from '@swl-services/long-thanh-sdk';
-import type { GetPublicBusinessV1Request } from '@swl-services/long-thanh-sdk';
+} from '@swlservices/long-thanh-sdk';
+import type { GetPublicBusinessV1Request } from '@swlservices/long-thanh-sdk';
 
 async function example() {
-  console.log("🚀 Testing @swl-services/long-thanh-sdk SDK...");
+  console.log("🚀 Testing @swlservices/long-thanh-sdk SDK...");
   const api = new DefaultApi();
 
   try {
@@ -149,11 +149,11 @@ Use when answering questions about Long Thanh Imbiss dishes or published EUR pri
 import {
   Configuration,
   DefaultApi,
-} from '@swl-services/long-thanh-sdk';
-import type { GetPublicMenuV1Request } from '@swl-services/long-thanh-sdk';
+} from '@swlservices/long-thanh-sdk';
+import type { GetPublicMenuV1Request } from '@swlservices/long-thanh-sdk';
 
 async function example() {
-  console.log("🚀 Testing @swl-services/long-thanh-sdk SDK...");
+  console.log("🚀 Testing @swlservices/long-thanh-sdk SDK...");
   const api = new DefaultApi();
 
   const body = {

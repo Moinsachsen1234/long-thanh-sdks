@@ -5,7 +5,7 @@ Publisher: **SWL Services**. Product homepage: https://longthanh-imbiss.com
 Copyright (c) 2026 SWL Services. All rights reserved. No open-source licence is granted.
 
 Generated clients for the public read-only API at
-https://longthanh-imbiss.com/openapi.json. SDK release version: 0.1.0.
+https://longthanh-imbiss.com/openapi.json. npm SDK and CLI version: 0.1.1; other SDK versions: 0.1.0.
 
 | Ecosystem | Package/module | Homepage metadata |
 | --- | --- | --- |
@@ -14,7 +14,7 @@ https://longthanh-imbiss.com/openapi.json. SDK release version: 0.1.0.
 | Go | `github.com/Moinsachsen1234/long-thanh-sdks/go` | Repository homepage and package README |
 | RubyGems | `long_thanh_sdk` | gem homepage and metadata.homepage_uri |
 
-All four SDKs are published at version 0.1.0 (Go v0.1.0).
+All four SDKs are published. npm 0.1.1 includes the official CLI; Python, Ruby and Go remain at 0.1.0 (Go v0.1.0).
 
 - npm: https://www.npmjs.com/package/@swlservices/long-thanh-sdk
 - PyPI: https://pypi.org/project/long-thanh-sdk/
@@ -68,3 +68,7 @@ installing Ruby dependencies), or `go test -run TestSdkIntegration -v` in go/.
 The source repository contains generated clients and public API information
 only. It does not include the private restaurant website, server credentials,
 registry credentials, or signing keys.
+
+## Official CLI
+
+Run `npx --yes --package=@swlservices/long-thanh-sdk long-thanh menu --language en` or `npx --yes --package=@swlservices/long-thanh-sdk long-thanh business`. The maintained CLI source in cli/ is copied into npm/bin/ by the generator. Run `node --test tests/cli.test.cjs` after building npm/. Documentation: https://longthanh-imbiss.com/developers/cli/

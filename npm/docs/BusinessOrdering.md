@@ -15,7 +15,7 @@ Name | Type
 ## Example
 
 ```typescript
-import type { BusinessOrdering } from '@swl-services/long-thanh-sdk'
+import type { BusinessOrdering } from '@swlservices/long-thanh-sdk'
 
 // TODO: Update the object below with actual values
 const example = {

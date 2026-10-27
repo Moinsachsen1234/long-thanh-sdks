@@ -1,7 +1,7 @@
 {
   "name": "@swlservices/long-thanh-sdk",
-  "version": "0.1.0",
-  "description": "OpenAPI client for @swlservices/long-thanh-sdk",
+  "version": "0.1.1",
+  "description": "Official Long Thanh Imbiss SDK and CLI by SWL Services: published menus, prices, hours and contact information.",
   "author": "SWL Services",
   "repository": {
     "type": "git",
@@ -26,7 +26,21 @@
   "homepage": "https://longthanh-imbiss.com",
   "files": [
     "dist",
+    "bin",
     "README.md",
     "LICENSE.txt"
+  ],
+  "bin": {
+    "long-thanh": "bin/long-thanh.cjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "long-thanh",
+    "cli",
+    "sdk",
+    "restaurant",
+    "api"
   ]
 }

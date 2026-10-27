@@ -8,5 +8,5 @@
   "publisher": "SWL Services",
   "version": "0.1.0",
   "license": "All rights reserved",
-  "status": "prepared; registry publication requires authentication"
+  "status": "generated release candidate; package-registry publication is a separate step"
 }
