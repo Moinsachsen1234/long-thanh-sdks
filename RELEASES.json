@@ -1,0 +1,71 @@
+{
+  "verifiedAt": "2026-10-27T20:54:32.265Z",
+  "npm": {
+    "name": "@swlservices/long-thanh-sdk",
+    "version": "0.1.0",
+    "homepage": "https://longthanh-imbiss.com",
+    "author": {
+      "name": "SWL Services"
+    },
+    "license": "UNLICENSED",
+    "tarballMatchesLocal": true,
+    "dist": {
+      "shasum": "6c032e7ac9d2ffe6e3e81c79074b23700ee49c1b",
+      "tarball": "https://registry.npmjs.org/@swlservices/long-thanh-sdk/-/long-thanh-sdk-0.1.0.tgz",
+      "fileCount": 55,
+      "integrity": "sha512-pQlRD9pw9Hju1CeutL2DrhmHIOCfZQpT4hnQQF0DuuXHdUvrixhO2x+TY3eeZCoSm/MuvrqfkEPAis82Gz8g4Q==",
+      "signatures": [
+        {
+          "sig": "MEQCIGP0RoRfM2B66e1gxDWyvL+QkHYQGsRte3iPHldVCLW/AiAx3Icj1rSMsbBFSajytnK4QJUaeWtP05QcJUMnQLN/Aw==",
+          "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+        },
+        {
+          "sig": "MEYCIQCmy6UtZ82qNvuYZlaWDwQ91k3xfaJe51Tz3DYbm0sZBQIhAK20EuvG/h61zN10XEPB7hnktqoseV2febAgJ2VS5hVJ",
+          "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+        }
+      ],
+      "unpackedSize": 159311
+    }
+  },
+  "go": {
+    "module": "github.com/Moinsachsen1234/long-thanh-sdks/go",
+    "version": "v0.1.0",
+    "publicProxyDownload": true
+  },
+  "python": {
+    "package": "long-thanh-sdk",
+    "version": "0.1.0",
+    "status": "published",
+    "url": "https://pypi.org/project/long-thanh-sdk/",
+    "homepage": "https://longthanh-imbiss.com",
+    "author": "SWL Services",
+    "license": "LicenseRef-Proprietary",
+    "files": [
+      {
+        "filename": "long_thanh_sdk-0.1.0-py3-none-any.whl",
+        "url": "https://files.pythonhosted.org/packages/bc/0f/9181a4d9c17b7f11f79ac4a41c34a01ea083bfb7379d60bb57140d32fdd7/long_thanh_sdk-0.1.0-py3-none-any.whl",
+        "sha256": "838c6df0590661e8e10afd9d967ba74350b965bbcb4074c717b48fda029df62d"
+      },
+      {
+        "filename": "long_thanh_sdk-0.1.0.tar.gz",
+        "url": "https://files.pythonhosted.org/packages/51/e4/cc6dfdfbdec30526e78d1818ff7f843268a2f64baf70e8c4efd144ac0a89/long_thanh_sdk-0.1.0.tar.gz",
+        "sha256": "200b606e1d286832dddca9bc4e0dc1a70382f98735f0257b5cf8871a1d13aad9"
+      }
+    ]
+  },
+  "ruby": {
+    "package": "long_thanh_sdk",
+    "version": "0.1.0",
+    "status": "published",
+    "url": "https://rubygems.org/gems/long_thanh_sdk",
+    "homepage": "https://longthanh-imbiss.com",
+    "authors": "SWL Services",
+    "licenses": [
+      "Nonstandard"
+    ],
+    "gem": "https://rubygems.org/gems/long_thanh_sdk-0.1.0.gem",
+    "sha256": "aab29d88b969a5c1f0584d9dd2cd0f4ee05caf13cf89ad3fea462ddaa70b6939"
+  },
+  "publisher": "SWL Services",
+  "license": "All rights reserved"
+}

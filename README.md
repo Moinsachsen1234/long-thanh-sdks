@@ -14,8 +14,15 @@ https://longthanh-imbiss.com/openapi.json. SDK release version: 0.1.0.
 | Go | `github.com/Moinsachsen1234/long-thanh-sdks/go` | Repository homepage and package README |
 | RubyGems | `long_thanh_sdk` | gem homepage and metadata.homepage_uri |
 
-Package-registry publication requires authenticated publisher accounts. A
-generated archive is not proof that a package has been published to a registry.
+All four SDKs are published at version 0.1.0 (Go v0.1.0).
+
+- npm: https://www.npmjs.com/package/@swlservices/long-thanh-sdk
+- PyPI: https://pypi.org/project/long-thanh-sdk/
+- Go: https://github.com/Moinsachsen1234/long-thanh-sdks/tree/main/go
+- RubyGems: https://rubygems.org/gems/long_thanh_sdk
+
+Current installation instructions: https://longthanh-imbiss.com/developers/sdks/
+PyPI and RubyGems releases use short-lived GitHub OIDC credentials.
 The npm scope belongs to the SWL Services organization swlservices. The authenticated publisher account moinsachsen1234 is its owner.
 
 ## API scope
