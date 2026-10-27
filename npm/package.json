@@ -1,0 +1,32 @@
+{
+  "name": "@swl-services/long-thanh-sdk",
+  "version": "0.1.0",
+  "description": "OpenAPI client for @swl-services/long-thanh-sdk",
+  "author": "SWL Services",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Moinsachsen1234/long-thanh-sdks.git",
+    "directory": "npm"
+  },
+  "license": "UNLICENSED",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "module": "./dist/esm/index.js",
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc && tsc -p tsconfig.esm.json",
+    "prepare": "npm run build"
+  },
+  "devDependencies": {
+    "typescript": "^4.0 || ^5.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://longthanh-imbiss.com",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE.txt"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "gemName": "long_thanh_sdk",
+  "moduleName": "LongThanhSdk",
+  "gemVersion": "0.1.0",
+  "gemAuthor": "SWL Services",
+  "gemHomepage": "https://longthanh-imbiss.com",
+  "gemSummary": "Long Thanh Imbiss public menu and business information SDK",
+  "gemDescription": "Read-only client for published Long Thanh Imbiss menu, EUR prices, hours and contact information. No orders or live availability.",
+  "gemLicense": "Nonstandard",
+  "gemMetadata": "{\"homepage_uri\" => \"https://longthanh-imbiss.com\"}",
+  "library": "faraday",
+  "hideGenerationTimestamp": true,
+  "disallowAdditionalPropertiesIfNotPresent": false,
+  "gitUserId": "Moinsachsen1234",
+  "gitRepoId": "long-thanh-sdks"
+}

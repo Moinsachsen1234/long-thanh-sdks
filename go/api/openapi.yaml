@@ -1,0 +1,625 @@
+openapi: 3.1.0
+info:
+  description: "Anonymous read-only published menu and business information. /api/v1/\
+    \ is the stable major-version namespace. Breaking changes require a new namespace.\
+    \ No orders, reservations or payments. Deprecated versions receive at least 90\
+    \ days notice in /api/, a Deprecation header and a Sunset header before removal.\
+    \ No version is currently deprecated."
+  title: Long Thanh Imbiss Public Information API
+  version: 1.1.1
+externalDocs:
+  url: https://longthanh-imbiss.com/api/
+servers:
+- url: https://longthanh-imbiss.com
+paths:
+  /api/v1/menu:
+    get:
+      description: "Use when answering questions about Long Thanh Imbiss dishes or\
+        \ published EUR prices. Returns all sections without pagination. Confirm availability,\
+        \ ingredients and orders by telephone. HEAD returns the same status and headers\
+        \ without a body."
+      operationId: getPublicMenuV1
+      parameters:
+      - description: Menu translation; omit for German. Repeated or unsupported query
+          parameters return 400.
+        explode: true
+        in: query
+        name: language
+        required: false
+        schema:
+          default: de
+          enum:
+          - de
+          - en
+          - zh
+          - vi
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Menu"
+          description: Published information. Cache facts in your client for at least
+            five minutes. Shared caching is disabled so quota headers remain per client.
+          headers:
+            RateLimit:
+              $ref: "#/components/headers/RateLimit"
+            RateLimit-Policy:
+              $ref: "#/components/headers/RateLimitPolicy"
+            Link:
+              description: "API, manifest and policy discovery. rel=\"deprecation\"\
+                \ points to the support policy and does not mean the resource is deprecated."
+              explode: false
+              schema:
+                type: string
+              style: simple
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowed"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+        "503":
+          $ref: "#/components/responses/Unavailable"
+      summary: Read the published menu and prices as JSON
+  /api/v1/business:
+    get:
+      description: "Use when a user asks where Long Thanh Imbiss is, how to contact\
+        \ it, its regular opening hours or how to order. Hours use Europe/Berlin time;\
+        \ holidays and changes require telephone confirmation. No parameters. Returns\
+        \ the complete resource without pagination. HEAD returns the same status and\
+        \ headers without a body."
+      operationId: getPublicBusinessV1
+      parameters: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Business"
+          description: Published information. Cache facts in your client for at least
+            five minutes. Shared caching is disabled so quota headers remain per client.
+          headers:
+            RateLimit:
+              $ref: "#/components/headers/RateLimit"
+            RateLimit-Policy:
+              $ref: "#/components/headers/RateLimitPolicy"
+            Link:
+              description: "API, manifest and policy discovery. rel=\"deprecation\"\
+                \ points to the support policy and does not mean the resource is deprecated."
+              explode: false
+              schema:
+                type: string
+              style: simple
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "405":
+          $ref: "#/components/responses/MethodNotAllowed"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+        "503":
+          $ref: "#/components/responses/Unavailable"
+      summary: "Read business contact, hours and ordering policy as JSON"
+  /speisekarte.txt:
+    get:
+      description: Compatibility feed with UTF-8 Markdown-style headings and EUR prices.
+        Rebuilt with the website; not live inventory. Static feeds do not emit application
+        quota headers. Use /api/v1/menu for typed JSON and structured API errors.
+      operationId: getMenu
+      parameters: []
+      responses:
+        "200":
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: German menu text
+        "404":
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Problem"
+            text/html:
+              schema:
+                type: string
+            text/markdown:
+              schema:
+                type: string
+          description: "Missing resource. Request application/problem+json or application/json\
+            \ for JSON, or text/markdown for Markdown."
+      summary: Read the existing German plain-text menu
+components:
+  headers:
+    RateLimit:
+      description: "IETF draft-ietf-httpapi-ratelimit-headers-11: remaining requests\
+        \ after this response and seconds to reset, not a UNIX timestamp."
+      example: '"public-api";r=59;t=60'
+      explode: false
+      schema:
+        type: string
+      style: simple
+    RateLimitPolicy:
+      description: "Shared quota of 60 requests per Cloudflare client IP per fixed\
+        \ 60-second window on /api/v1/. GET, HEAD and errors count; rejected requests\
+        \ do not extend the window."
+      example: '"public-api";q=60;w=60'
+      explode: false
+      schema:
+        type: string
+      style: simple
+    RetryAfter:
+      description: Minimum seconds to wait before retrying.
+      explode: false
+      schema:
+        minimum: 1
+        type: integer
+      style: simple
+  responses:
+    BadRequest:
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/Problem"
+      description: Invalid or repeated parameters; code INVALID_PARAMETER.
+      headers:
+        RateLimit:
+          $ref: "#/components/headers/RateLimit"
+        RateLimit-Policy:
+          $ref: "#/components/headers/RateLimitPolicy"
+    NotFound:
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/Problem"
+      description: Unknown resource; code NOT_FOUND.
+      headers:
+        RateLimit:
+          $ref: "#/components/headers/RateLimit"
+        RateLimit-Policy:
+          $ref: "#/components/headers/RateLimitPolicy"
+    MethodNotAllowed:
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/Problem"
+      description: Read-only endpoint; code METHOD_NOT_ALLOWED.
+      headers:
+        RateLimit:
+          $ref: "#/components/headers/RateLimit"
+        RateLimit-Policy:
+          $ref: "#/components/headers/RateLimitPolicy"
+        Allow:
+          explode: false
+          schema:
+            enum:
+            - "GET, HEAD"
+            type: string
+          style: simple
+    RateLimited:
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/Problem"
+      description: Quota exhausted; code RATE_LIMITED. Honor Retry-After.
+      headers:
+        RateLimit:
+          $ref: "#/components/headers/RateLimit"
+        RateLimit-Policy:
+          $ref: "#/components/headers/RateLimitPolicy"
+        Retry-After:
+          $ref: "#/components/headers/RetryAfter"
+    InternalError:
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/Problem"
+      description: Unexpected error; code INTERNAL_ERROR. No internal diagnostics
+        are returned.
+      headers:
+        RateLimit:
+          $ref: "#/components/headers/RateLimit"
+        RateLimit-Policy:
+          $ref: "#/components/headers/RateLimitPolicy"
+    Unavailable:
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/Problem"
+      description: Quota service unavailable; code SERVICE_UNAVAILABLE. No remaining
+        quota is claimed when it cannot be measured.
+      headers:
+        RateLimit-Policy:
+          $ref: "#/components/headers/RateLimitPolicy"
+        Retry-After:
+          $ref: "#/components/headers/RetryAfter"
+  schemas:
+    Problem:
+      description: RFC 9457 problem details with code and resolution extension members.
+        status matches the HTTP status.
+      example:
+        type: https://openapi-generator.tech
+        title: title
+        status: 415
+        detail: detail
+        code: INVALID_PARAMETER
+        resolution: resolution
+        instance: instance
+      properties:
+        type:
+          enum:
+          - about:blank
+          format: uri
+          type: string
+        title:
+          type: string
+        status:
+          maximum: 599
+          minimum: 400
+          type: integer
+        detail:
+          type: string
+        code:
+          enum:
+          - INVALID_PARAMETER
+          - NOT_FOUND
+          - METHOD_NOT_ALLOWED
+          - RATE_LIMITED
+          - INTERNAL_ERROR
+          - SERVICE_UNAVAILABLE
+          - INVALID_REQUEST
+          - FORBIDDEN
+          - PAYLOAD_TOO_LARGE
+          - UNSUPPORTED_MEDIA_TYPE
+          type: string
+        resolution:
+          type: string
+        instance:
+          description: Requested path. Query values are omitted.
+          format: uri-reference
+          type: string
+      required:
+      - code
+      - detail
+      - resolution
+      - status
+      - title
+      - type
+    Menu:
+      additionalProperties: false
+      example:
+        version: "1"
+        name: name
+        language: de
+        currency: EUR
+        source: https://openapi-generator.tech
+        limitations:
+        - limitations
+        - limitations
+        sections:
+        - id: id
+          name: name
+          items:
+          - id: id
+            number: number
+            name: name
+            description: description
+            price: price
+            vegetarianMarked: true
+          - id: id
+            number: number
+            name: name
+            description: description
+            price: price
+            vegetarianMarked: true
+        - id: id
+          name: name
+          items:
+          - id: id
+            number: number
+            name: name
+            description: description
+            price: price
+            vegetarianMarked: true
+          - id: id
+            number: number
+            name: name
+            description: description
+            price: price
+            vegetarianMarked: true
+      properties:
+        version:
+          enum:
+          - "1"
+          type: string
+        name:
+          type: string
+        language:
+          enum:
+          - de
+          - en
+          - zh
+          - vi
+          type: string
+        currency:
+          enum:
+          - EUR
+          type: string
+        source:
+          format: uri
+          type: string
+        limitations:
+          items:
+            type: string
+          type: array
+          default: null
+        sections:
+          items:
+            $ref: "#/components/schemas/MenuSection"
+          type: array
+          default: null
+      required:
+      - currency
+      - language
+      - limitations
+      - name
+      - sections
+      - source
+      - version
+    MenuSection:
+      additionalProperties: false
+      example:
+        id: id
+        name: name
+        items:
+        - id: id
+          number: number
+          name: name
+          description: description
+          price: price
+          vegetarianMarked: true
+        - id: id
+          number: number
+          name: name
+          description: description
+          price: price
+          vegetarianMarked: true
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        items:
+          items:
+            $ref: "#/components/schemas/MenuItem"
+          type: array
+          default: null
+      required:
+      - id
+      - items
+      - name
+    MenuItem:
+      additionalProperties: false
+      example:
+        id: id
+        number: number
+        name: name
+        description: description
+        price: price
+        vegetarianMarked: true
+      properties:
+        id:
+          type: string
+        number:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          description: Decimal EUR amount including VAT. Extras may cost more.
+          pattern: "^[0-9]+\\.[0-9]{2}$"
+          type: string
+        vegetarianMarked:
+          description: "True only when labelled vegetarian on the published menu;\
+            \ false means no label, not a dietary assessment. Never infer allergen\
+            \ safety or vegan suitability."
+          type: boolean
+      required:
+      - description
+      - id
+      - name
+      - number
+      - price
+      - vegetarianMarked
+    Business:
+      additionalProperties: {}
+      example:
+        version: "1"
+        name: name
+        description: description
+        url: https://openapi-generator.tech
+        telephone: telephone
+        address:
+          streetAddress: streetAddress
+          postalCode: postalCode
+          addressLocality: addressLocality
+          addressCountry: DE
+        openingHours:
+          days:
+          - days
+          - days
+          opens: opens
+          closes: closes
+          closed:
+          - closed
+          - closed
+          timeZone: Europe/Berlin
+          holidayHours: holidayHours
+        ordering:
+          channel: channel
+          steps:
+          - steps
+          - steps
+          onlineCheckout: true
+          agentCanPlaceOrders: true
+          delivery: delivery
+        limitations:
+        - limitations
+        - limitations
+      properties:
+        version:
+          enum:
+          - "1"
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        url:
+          format: uri
+          type: string
+        telephone:
+          type: string
+        address:
+          $ref: "#/components/schemas/Business_address"
+        openingHours:
+          $ref: "#/components/schemas/Business_openingHours"
+        ordering:
+          $ref: "#/components/schemas/Business_ordering"
+        limitations:
+          items:
+            type: string
+          type: array
+          default: null
+      required:
+      - address
+      - description
+      - limitations
+      - name
+      - openingHours
+      - ordering
+      - telephone
+      - url
+      - version
+    Business_address:
+      additionalProperties: false
+      example:
+        streetAddress: streetAddress
+        postalCode: postalCode
+        addressLocality: addressLocality
+        addressCountry: DE
+      properties:
+        streetAddress:
+          type: string
+        postalCode:
+          type: string
+        addressLocality:
+          type: string
+        addressCountry:
+          enum:
+          - DE
+          type: string
+      required:
+      - addressCountry
+      - addressLocality
+      - postalCode
+      - streetAddress
+    Business_openingHours:
+      additionalProperties: false
+      example:
+        days:
+        - days
+        - days
+        opens: opens
+        closes: closes
+        closed:
+        - closed
+        - closed
+        timeZone: Europe/Berlin
+        holidayHours: holidayHours
+      properties:
+        days:
+          items:
+            type: string
+          type: array
+          default: null
+        opens:
+          pattern: "^[0-2][0-9]:[0-5][0-9]$"
+          type: string
+        closes:
+          pattern: "^[0-2][0-9]:[0-5][0-9]$"
+          type: string
+        closed:
+          items:
+            type: string
+          type: array
+          default: null
+        timeZone:
+          enum:
+          - Europe/Berlin
+          type: string
+        holidayHours:
+          type: string
+      required:
+      - closed
+      - closes
+      - days
+      - holidayHours
+      - opens
+      - timeZone
+    Business_ordering:
+      additionalProperties: false
+      example:
+        channel: channel
+        steps:
+        - steps
+        - steps
+        onlineCheckout: true
+        agentCanPlaceOrders: true
+        delivery: delivery
+      properties:
+        channel:
+          type: string
+        steps:
+          items:
+            type: string
+          type: array
+          default: null
+        onlineCheckout:
+          enum:
+          - false
+          type: boolean
+        agentCanPlaceOrders:
+          enum:
+          - false
+          type: boolean
+        delivery:
+          type: string
+      required:
+      - agentCanPlaceOrders
+      - channel
+      - delivery
+      - onlineCheckout
+      - steps
+x-versioning-policy:
+  strategy: url-path
+  current: /api/v1/
+  minimumDeprecationNoticeDays: 90
+  documentation: https://longthanh-imbiss.com/api/deprecation/
+  deprecationHeaders:
+  - Deprecation
+  - Sunset
+  - Link

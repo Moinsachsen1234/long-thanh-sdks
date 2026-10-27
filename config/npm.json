@@ -1,0 +1,11 @@
+{
+  "npmName": "@swl-services/long-thanh-sdk",
+  "npmVersion": "0.1.0",
+  "npmRepository": "https://github.com/Moinsachsen1234/long-thanh-sdks.git",
+  "supportsES6": true,
+  "hideGenerationTimestamp": true,
+  "disallowAdditionalPropertiesIfNotPresent": false,
+  "licenseName": "UNLICENSED",
+  "gitUserId": "Moinsachsen1234",
+  "gitRepoId": "long-thanh-sdks"
+}

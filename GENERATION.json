@@ -1,0 +1,12 @@
+{
+  "generator": {
+    "version": "7.26.0",
+    "sha256": "1760050094997b9cc790cc1350be095f15da8c08a996b184d3eadc4ccda5e35e",
+    "url": "https://repo.maven.apache.org/maven2/org/openapitools/openapi-generator-cli/7.26.0/openapi-generator-cli-7.26.0.jar"
+  },
+  "openapiSha256": "abf2fc69b24a9981f6862a9f9cad5abf115bfa93eea4daf978ec0d5948209bf9",
+  "publisher": "SWL Services",
+  "version": "0.1.0",
+  "license": "All rights reserved",
+  "status": "prepared; registry publication requires authentication"
+}

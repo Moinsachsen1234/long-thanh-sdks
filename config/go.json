@@ -1,0 +1,11 @@
+{
+  "packageName": "longthanh",
+  "packageVersion": "0.1.0",
+  "withGoMod": true,
+  "isGoSubmodule": false,
+  "hideGenerationTimestamp": true,
+  "disallowAdditionalPropertiesIfNotPresent": false,
+  "licenseName": "Proprietary",
+  "gitUserId": "Moinsachsen1234",
+  "gitRepoId": "long-thanh-sdks/go"
+}

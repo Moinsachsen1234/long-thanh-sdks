@@ -1,0 +1,643 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Long Thanh Imbiss Public Information API",
+    "version": "1.1.1",
+    "description": "Anonymous read-only published menu and business information. /api/v1/ is the stable major-version namespace. Breaking changes require a new namespace. No orders, reservations or payments. Deprecated versions receive at least 90 days notice in /api/, a Deprecation header and a Sunset header before removal. No version is currently deprecated."
+  },
+  "servers": [
+    {
+      "url": "https://longthanh-imbiss.com"
+    }
+  ],
+  "externalDocs": {
+    "url": "https://longthanh-imbiss.com/api/"
+  },
+  "security": [],
+  "x-versioning-policy": {
+    "strategy": "url-path",
+    "current": "/api/v1/",
+    "minimumDeprecationNoticeDays": 90,
+    "documentation": "https://longthanh-imbiss.com/api/deprecation/",
+    "deprecationHeaders": [
+      "Deprecation",
+      "Sunset",
+      "Link"
+    ]
+  },
+  "paths": {
+    "/api/v1/menu": {
+      "get": {
+        "operationId": "getPublicMenuV1",
+        "summary": "Read the published menu and prices as JSON",
+        "description": "Use when answering questions about Long Thanh Imbiss dishes or published EUR prices. Returns all sections without pagination. Confirm availability, ingredients and orders by telephone. HEAD returns the same status and headers without a body.",
+        "parameters": [
+          {
+            "name": "language",
+            "in": "query",
+            "required": false,
+            "description": "Menu translation; omit for German. Repeated or unsupported query parameters return 400.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "de",
+                "en",
+                "zh",
+                "vi"
+              ],
+              "default": "de"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Published information. Cache facts in your client for at least five minutes. Shared caching is disabled so quota headers remain per client.",
+            "headers": {
+              "RateLimit": {
+                "$ref": "#/components/headers/RateLimit"
+              },
+              "RateLimit-Policy": {
+                "$ref": "#/components/headers/RateLimitPolicy"
+              },
+              "Link": {
+                "description": "API, manifest and policy discovery. rel=\"deprecation\" points to the support policy and does not mean the resource is deprecated.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Menu"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/business": {
+      "get": {
+        "operationId": "getPublicBusinessV1",
+        "summary": "Read business contact, hours and ordering policy as JSON",
+        "description": "Use when a user asks where Long Thanh Imbiss is, how to contact it, its regular opening hours or how to order. Hours use Europe/Berlin time; holidays and changes require telephone confirmation. No parameters. Returns the complete resource without pagination. HEAD returns the same status and headers without a body.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Published information. Cache facts in your client for at least five minutes. Shared caching is disabled so quota headers remain per client.",
+            "headers": {
+              "RateLimit": {
+                "$ref": "#/components/headers/RateLimit"
+              },
+              "RateLimit-Policy": {
+                "$ref": "#/components/headers/RateLimitPolicy"
+              },
+              "Link": {
+                "description": "API, manifest and policy discovery. rel=\"deprecation\" points to the support policy and does not mean the resource is deprecated.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Business"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      }
+    },
+    "/speisekarte.txt": {
+      "get": {
+        "operationId": "getMenu",
+        "summary": "Read the existing German plain-text menu",
+        "description": "Compatibility feed with UTF-8 Markdown-style headings and EUR prices. Rebuilt with the website; not live inventory. Static feeds do not emit application quota headers. Use /api/v1/menu for typed JSON and structured API errors.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "German menu text",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Missing resource. Request application/problem+json or application/json for JSON, or text/markdown for Markdown.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              },
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/markdown": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Problem": {
+        "type": "object",
+        "description": "RFC 9457 problem details with code and resolution extension members. status matches the HTTP status.",
+        "required": [
+          "type",
+          "title",
+          "status",
+          "detail",
+          "code",
+          "resolution"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "format": "uri",
+            "const": "about:blank"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer",
+            "minimum": 400,
+            "maximum": 599
+          },
+          "detail": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string",
+            "enum": [
+              "INVALID_PARAMETER",
+              "NOT_FOUND",
+              "METHOD_NOT_ALLOWED",
+              "RATE_LIMITED",
+              "INTERNAL_ERROR",
+              "SERVICE_UNAVAILABLE",
+              "INVALID_REQUEST",
+              "FORBIDDEN",
+              "PAYLOAD_TOO_LARGE",
+              "UNSUPPORTED_MEDIA_TYPE"
+            ]
+          },
+          "resolution": {
+            "type": "string"
+          },
+          "instance": {
+            "type": "string",
+            "format": "uri-reference",
+            "description": "Requested path. Query values are omitted."
+          }
+        }
+      },
+      "Menu": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "version",
+          "name",
+          "language",
+          "currency",
+          "source",
+          "limitations",
+          "sections"
+        ],
+        "properties": {
+          "version": {
+            "type": "string",
+            "const": "1"
+          },
+          "name": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "de",
+              "en",
+              "zh",
+              "vi"
+            ]
+          },
+          "currency": {
+            "type": "string",
+            "const": "EUR"
+          },
+          "source": {
+            "type": "string",
+            "format": "uri"
+          },
+          "limitations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "sections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MenuSection"
+            }
+          }
+        }
+      },
+      "MenuSection": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "items"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MenuItem"
+            }
+          }
+        }
+      },
+      "MenuItem": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "number",
+          "name",
+          "description",
+          "price",
+          "vegetarianMarked"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "number": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "string",
+            "pattern": "^[0-9]+\\.[0-9]{2}$",
+            "description": "Decimal EUR amount including VAT. Extras may cost more."
+          },
+          "vegetarianMarked": {
+            "type": "boolean",
+            "description": "True only when labelled vegetarian on the published menu; false means no label, not a dietary assessment. Never infer allergen safety or vegan suitability."
+          }
+        }
+      },
+      "Business": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "version",
+          "name",
+          "description",
+          "url",
+          "telephone",
+          "address",
+          "openingHours",
+          "ordering",
+          "limitations"
+        ],
+        "properties": {
+          "version": {
+            "type": "string",
+            "const": "1"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "telephone": {
+            "type": "string"
+          },
+          "address": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "streetAddress",
+              "postalCode",
+              "addressLocality",
+              "addressCountry"
+            ],
+            "properties": {
+              "streetAddress": {
+                "type": "string"
+              },
+              "postalCode": {
+                "type": "string"
+              },
+              "addressLocality": {
+                "type": "string"
+              },
+              "addressCountry": {
+                "type": "string",
+                "const": "DE"
+              }
+            }
+          },
+          "openingHours": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "days",
+              "opens",
+              "closes",
+              "closed",
+              "timeZone",
+              "holidayHours"
+            ],
+            "properties": {
+              "days": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "opens": {
+                "type": "string",
+                "pattern": "^[0-2][0-9]:[0-5][0-9]$"
+              },
+              "closes": {
+                "type": "string",
+                "pattern": "^[0-2][0-9]:[0-5][0-9]$"
+              },
+              "closed": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "timeZone": {
+                "type": "string",
+                "const": "Europe/Berlin"
+              },
+              "holidayHours": {
+                "type": "string"
+              }
+            }
+          },
+          "ordering": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "channel",
+              "steps",
+              "onlineCheckout",
+              "agentCanPlaceOrders",
+              "delivery"
+            ],
+            "properties": {
+              "channel": {
+                "type": "string"
+              },
+              "steps": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "onlineCheckout": {
+                "type": "boolean",
+                "const": false
+              },
+              "agentCanPlaceOrders": {
+                "type": "boolean",
+                "const": false
+              },
+              "delivery": {
+                "type": "string"
+              }
+            }
+          },
+          "limitations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "headers": {
+      "RateLimit": {
+        "description": "IETF draft-ietf-httpapi-ratelimit-headers-11: remaining requests after this response and seconds to reset, not a UNIX timestamp.",
+        "schema": {
+          "type": "string"
+        },
+        "example": "\"public-api\";r=59;t=60"
+      },
+      "RateLimitPolicy": {
+        "description": "Shared quota of 60 requests per Cloudflare client IP per fixed 60-second window on /api/v1/. GET, HEAD and errors count; rejected requests do not extend the window.",
+        "schema": {
+          "type": "string"
+        },
+        "example": "\"public-api\";q=60;w=60"
+      },
+      "RetryAfter": {
+        "description": "Minimum seconds to wait before retrying.",
+        "schema": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Invalid or repeated parameters; code INVALID_PARAMETER.",
+        "headers": {
+          "RateLimit": {
+            "$ref": "#/components/headers/RateLimit"
+          },
+          "RateLimit-Policy": {
+            "$ref": "#/components/headers/RateLimitPolicy"
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Unknown resource; code NOT_FOUND.",
+        "headers": {
+          "RateLimit": {
+            "$ref": "#/components/headers/RateLimit"
+          },
+          "RateLimit-Policy": {
+            "$ref": "#/components/headers/RateLimitPolicy"
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        }
+      },
+      "MethodNotAllowed": {
+        "description": "Read-only endpoint; code METHOD_NOT_ALLOWED.",
+        "headers": {
+          "RateLimit": {
+            "$ref": "#/components/headers/RateLimit"
+          },
+          "RateLimit-Policy": {
+            "$ref": "#/components/headers/RateLimitPolicy"
+          },
+          "Allow": {
+            "schema": {
+              "type": "string",
+              "const": "GET, HEAD"
+            }
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        }
+      },
+      "RateLimited": {
+        "description": "Quota exhausted; code RATE_LIMITED. Honor Retry-After.",
+        "headers": {
+          "RateLimit": {
+            "$ref": "#/components/headers/RateLimit"
+          },
+          "RateLimit-Policy": {
+            "$ref": "#/components/headers/RateLimitPolicy"
+          },
+          "Retry-After": {
+            "$ref": "#/components/headers/RetryAfter"
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        }
+      },
+      "InternalError": {
+        "description": "Unexpected error; code INTERNAL_ERROR. No internal diagnostics are returned.",
+        "headers": {
+          "RateLimit": {
+            "$ref": "#/components/headers/RateLimit"
+          },
+          "RateLimit-Policy": {
+            "$ref": "#/components/headers/RateLimitPolicy"
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        }
+      },
+      "Unavailable": {
+        "description": "Quota service unavailable; code SERVICE_UNAVAILABLE. No remaining quota is claimed when it cannot be measured.",
+        "headers": {
+          "RateLimit-Policy": {
+            "$ref": "#/components/headers/RateLimitPolicy"
+          },
+          "Retry-After": {
+            "$ref": "#/components/headers/RetryAfter"
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        }
+      }
+    }
+  }
+}

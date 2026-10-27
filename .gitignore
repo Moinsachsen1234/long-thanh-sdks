@@ -1,0 +1,11 @@
+node_modules/
+dist/
+build/
+*.egg-info/
+__pycache__/
+*.gem
+*.tgz
+*.whl
+.env*
+.npmrc
+.pypirc

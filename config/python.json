@@ -1,0 +1,13 @@
+{
+  "packageName": "long_thanh_sdk",
+  "projectName": "long-thanh-sdk",
+  "packageVersion": "0.1.0",
+  "packageUrl": "https://longthanh-imbiss.com",
+  "library": "urllib3",
+  "buildSystem": "setuptools",
+  "hideGenerationTimestamp": true,
+  "disallowAdditionalPropertiesIfNotPresent": false,
+  "licenseName": "Proprietary",
+  "gitUserId": "Moinsachsen1234",
+  "gitRepoId": "long-thanh-sdks"
+}
